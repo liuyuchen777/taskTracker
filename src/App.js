@@ -2,17 +2,20 @@
  * @Author: Liu Yuchen
  * @Date: 2021-04-27 23:35:08
  * @LastEditors: Liu Yuchen
- * @LastEditTime: 2021-04-28 04:37:01
+ * @LastEditTime: 2021-04-29 02:01:00
  * @Description:
  * @FilePath: /taskTracker/src/App.js
  * @GitHub: https://github.com/liuyuchen777
  */
 
 import { React, useEffect } from 'react';
+import { BrowserRouter as Router, Route } from 'react-router-dom'
 import Header from './components/Header'
 import Tasks from './components/Tasks'
 import { useState } from 'react'
 import AddTask from './components/AddTask'
+import Footer from './Footer'
+import About from './About'
 
 function App() {
   const [showAddTask, setShowAddTask] = useState(
@@ -107,16 +110,24 @@ function App() {
 
   return (
     // single element
+    <Router>
     <div className="container">
       <Header onAdd={() => 
         setShowAddTask(!showAddTask)} showAdd={showAddTask}
       />
-      {showAddTask && <AddTask onAdd={addTask} />}
-      {tasks.length > 0 ? 
-      <Tasks tasks={tasks} onDelete={deleteTask} onToggle={toggleReminder} /> : 
-      <p>no tasks to show</p>
-      }
+      <Route path='/' exact render={(props) => (
+          <>
+            {showAddTask && <AddTask onAdd={addTask} />}
+            {tasks.length > 0 ? 
+            <Tasks tasks={tasks} onDelete={deleteTask} onToggle={toggleReminder} /> : 
+            <p>no tasks to show</p>
+            }
+          </>
+        )} />
+      <Route path='/about' component={About} />
+      <Footer />
     </div>
+    </Router>
     // <h2></h2>
   );
 }
